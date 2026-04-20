@@ -8,10 +8,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="photos.js"></script>
+
 <style>
 /* ═══════════════════════════════════════════════════════════
-   CATCH THE RAIN DASHBOARD  v5.6.4-gh (GitHub edition — full photos removed to meet 25MB limit) — April 10, 2026
+   CATCH THE RAIN DASHBOARD  v5.2.1 — April 10, 2026
    Changes from v5.1:
    - Fixed applicant overview chart values (266/240/207/78)
    - Removed "2019 & earlier" from year dropdown
@@ -489,7 +489,7 @@ body{font-family:"Inter",sans-serif;background:var(--stone);color:var(--ink);
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.6.4-gh &mdash; Apr 2026</div>
+  <div class="hdr-ver">v5.6.4 &mdash; Apr 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -882,8 +882,8 @@ function closeGallery(){
 
 // LIGHTBOX
 let lbPhotos=[],lbIdx=0,lbOpen=false,lbX=0;
-function getFS(c){return(typeof THUMBS!=='undefined'&&THUMBS[c])?THUMBS[c]:'photos/'+c}
-function getTH(c){return(typeof THUMBS!=='undefined'&&THUMBS[c])?THUMBS[c]:'photos/'+c}
+function getFS(c){return''}
+function getTH(c){return''}
 function openLb(photos,idx){
   if(!photos||!photos.length)return;
   lbPhotos=photos;lbIdx=idx;lbOpen=true;
@@ -945,7 +945,7 @@ function mkPopup(p,idx){
   rows.push(['Landowner cost',fmt(p.landowner)]);
   const ph=p.photos&&p.photos.length>0;
   const photoHtml=ph
-    ?'<div class="pu-ph">'+p.photos.slice(0,4).map((c,i)=>'<img class="pu-th" src="'+getTH(c)+'" onclick="openLb('+JSON.stringify(p.photos)+','+i+')" title="Expand">').join('')+'</div>'
+    ?'<div class="pu-noph" style="color:var(--forest-mid)">&#128247; '+p.photos.length+' photo'+(p.photos.length!==1?'s':'')+' on file</div>'
     :'<div class="pu-noph">No photos on file</div>';
   const learnMore=FEATURED_URLS[idx]
     ?'<a href="'+FEATURED_URLS[idx]+'" class="pu-learn-more">&#128279; Learn more about this project</a>'
