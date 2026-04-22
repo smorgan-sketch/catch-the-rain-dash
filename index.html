@@ -359,6 +359,33 @@ body{font-family:"Inter",sans-serif;background:var(--stone);color:var(--ink);
   .panel-close{top:12px;right:14px}
 }
 
+
+/* ─── PRIVATE TABLE ─────────────────────────────────────── */
+.tbl-scroll{overflow:auto;max-height:480px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:820px}
+th{font-size:10px;font-weight:600;color:var(--ink-3);text-transform:uppercase;
+  letter-spacing:.4px;text-align:left;padding:7px 9px;
+  border-bottom:1.5px solid var(--stone-3);position:sticky;top:0;
+  background:#fff;z-index:2;cursor:pointer;white-space:nowrap;user-select:none}
+th:hover{color:var(--forest-mid)}
+td{padding:6px 9px;border-bottom:1px solid rgba(0,0,0,.04);vertical-align:middle}
+tr:hover td{background:var(--stone);cursor:pointer}
+.tc{display:flex;flex-wrap:wrap;gap:3px}
+.srch-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+#sInput{flex:1;min-width:200px;padding:8px 12px;border:1.5px solid var(--stone-3);
+  border-radius:7px;font-size:13px;font-family:"Inter",sans-serif;outline:none;
+  background:var(--stone)}
+#sInput:focus{border-color:var(--leaf);box-shadow:0 0 0 3px rgba(45,143,101,.1);background:#fff}
+.srch-sel{padding:8px 10px;border:1.5px solid var(--stone-3);border-radius:7px;
+  font-size:12px;font-family:"Inter",sans-serif;background:var(--stone);
+  outline:none;cursor:pointer;color:var(--ink)}
+.srch-sel:focus{border-color:var(--leaf)}
+.srch-clr{padding:8px 12px;background:var(--stone-2);border:1.5px solid var(--stone-3);
+  border-radius:7px;font-size:12px;cursor:pointer;font-family:"Inter",sans-serif;
+  color:var(--ink-2)}
+#sCnt{font-size:12px;color:var(--ink-3)}
+.tpa{background:#d1fae5;color:#064e3b}.tde{background:#dbeafe;color:#1e40af}
+
 /* ─── RESPONSIVE ──────────────────────────────────────────── */
 
 /* ── TABLET (≤1100px): map goes full width, sidebar becomes 2-col ── */
@@ -545,7 +572,7 @@ body{font-family:"Inter",sans-serif;background:var(--stone);color:var(--ink);
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.14.1 &mdash; Apr 2026</div>
+  <div class="hdr-ver">v5.15 &mdash; Apr 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -881,6 +908,59 @@ body{font-family:"Inter",sans-serif;background:var(--stone);color:var(--ink);
 </div><!-- /featured-grid -->
   </div>
 
+  <!-- ── Private Project Records ──────────────────────── -->
+  <div class="gap-lg" id="private-section" style="display:none">
+    <div class="sec-hdr">
+      <div>
+        <div class="sec-title">Project Records</div>
+        <div class="sec-sub">Full data including names and financials &mdash; authorized users only</div>
+      </div>
+      <div id="tblAuth" style="display:none;align-items:center;gap:6px;font-size:11px;color:var(--forest-mid)">
+        <svg width="11" height="13" viewBox="0 0 12 14" fill="none"><rect x="1" y="6" width="10" height="8" rx="2" fill="var(--forest-mid)" opacity=".45"/><path d="M3 6V4a3 3 0 016 0v2" stroke="var(--forest-mid)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        Unlocked &mdash; <span style="cursor:pointer;text-decoration:underline" onclick="lockIt()">lock</span>
+      </div>
+    </div>
+    <div class="card card-pad">
+      <div class="srch-bar">
+        <input type="text" id="sInput" placeholder="&#128269;  Search by name, municipality&hellip;" oninput="doSearch()">
+        <select class="srch-sel" id="yrSel" onchange="doSearch()">
+          <option value="">All years</option>
+          <option>2026</option><option>2025</option><option>2024</option><option>2023</option>
+          <option>2022</option><option>2021</option><option>2020</option><option>2019</option>
+          <option>2018</option><option>2017</option>
+        </select>
+        <select class="srch-sel" id="tpSel" onchange="doSearch()">
+          <option value="">All types</option>
+          <option value="cl">Conservation Landscaping</option>
+          <option value="tp">Tree Planting / Buffer</option>
+          <option value="rg">Rain Garden</option>
+          <option value="rb">Rain Barrel</option>
+          <option value="dp">Depaving</option>
+          <option value="pp">Permeable Pavers</option>
+        </select>
+        <button class="srch-clr" onclick="clrSearch()">&#10005; Clear</button>
+        <span id="sCnt"></span>
+      </div>
+      <div class="tbl-scroll"><table>
+        <thead><tr>
+          <th onclick="sortT('i')"># &#8597;</th>
+          <th onclick="sortT('name')">Applicant &#8597;</th>
+          <th onclick="sortT('muni')">Municipality &#8597;</th>
+          <th>Address</th>
+          <th>State</th>
+          <th onclick="sortT('year')">Year &#8597;</th>
+          <th>Practices</th>
+          <th style="text-align:right" onclick="sortT('cost')">Project Cost &#8597;</th>
+          <th style="text-align:right">W&amp;S Rebate</th>
+          <th style="text-align:right">Grant</th>
+          <th style="text-align:right">Landowner</th>
+          <th style="text-align:center">Photos</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table></div>
+    </div>
+  </div>
+
 </div><!-- /page -->
 
 <script>
@@ -931,7 +1011,13 @@ function closeLock(){document.getElementById('lock').classList.remove('show')}
 function unlock(){
   const v=document.getElementById('lockPw').value;
   if(!v){document.getElementById('lockErr').textContent='Please enter a password';return}
-  if(v===PW){isUnlocked=true;closeLock();alert('Access granted. Use the Private View button whenever you need project records.')}
+  if(v===PW){
+    isUnlocked=true;closeLock();
+    document.getElementById('private-section').style.display='block';
+    document.getElementById('tblAuth').style.display='flex';
+    document.getElementById('private-section').scrollIntoView({behavior:'smooth',block:'start'});
+    rTbl(P);
+  }
   else{document.getElementById('lockErr').textContent='Incorrect password — try again';document.getElementById('lockPw').value='';setTimeout(()=>document.getElementById('lockPw').focus(),10)}
 }
 document.addEventListener('keydown',e=>{
@@ -1196,6 +1282,73 @@ map.on('click',function(e){
   if(activePanelIdx===null) return;
   closePanel();
 });
+
+
+function lockIt(){
+  isUnlocked=false;
+  document.getElementById('private-section').style.display='none';
+  document.getElementById('tblAuth').style.display='none';
+}
+
+
+// ── PRIVATE TABLE ──────────────────────────────────────────
+function fmt(v){return v>0?'$'+v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):'—'}
+let tData=P,sKey='i',sAsc=true;
+function isDE(p){return /castle|ncc/i.test(p.muni)||/^newark$/i.test(p.muni.trim())||/wilmington|hockessin/i.test(p.addr)}
+function doSearch(){
+  const q=(document.getElementById('sInput').value||'').toLowerCase().trim();
+  const yr=document.getElementById('yrSel').value;
+  const tp=document.getElementById('tpSel').value;
+  let b=P;
+  if(q)b=b.filter(p=>(p.name+' '+(p.fname||'')+' '+p.muni+' '+p.addr).toLowerCase().includes(q));
+  if(yr)b=b.filter(p=>p.year===+yr);
+  if(tp)b=b.filter(p=>p.types&&p.types.includes(tp));
+  tData=b;
+  document.getElementById('sCnt').textContent=b.length===P.length?'':b.length+' result'+(b.length!==1?'s':'');
+  rTbl(b);
+}
+function clrSearch(){
+  document.getElementById('sInput').value='';
+  document.getElementById('yrSel').value='';
+  document.getElementById('tpSel').value='';
+  document.getElementById('sCnt').textContent='';
+  tData=P;rTbl(P);
+}
+function sortT(k){
+  if(sKey===k)sAsc=!sAsc;else{sKey=k;sAsc=true}
+  const s=[...tData].sort((a,b)=>{
+    const va=k==='i'?P.indexOf(a):k==='cost'?a.cost:k==='year'?a.year:k==='name'?(a.name||''):k==='muni'?(a.muni||''):'';
+    const vb=k==='i'?P.indexOf(b):k==='cost'?b.cost:k==='year'?b.year:k==='name'?(b.name||''):k==='muni'?(b.muni||''):'';
+    return sAsc?(va>vb?1:-1):(va<vb?1:-1);
+  });
+  rTbl(s,true);
+}
+function rTbl(data,keep){
+  if(!isUnlocked)return;
+  if(!keep)tData=data;
+  const TBC={cl:'tcl',tp:'ttp',rg:'trg',rb:'trb',dp:'tdp',pp:'tpp',ot:'tot'};
+  const TL2={cl:'Conservation Landscaping',tp:'Tree Planting',rg:'Rain Garden',rb:'Rain Barrel',dp:'Depaving',pp:'Permeable Pavers',ot:'Other'};
+  document.getElementById('tbody').innerHTML=data.map((p,i)=>{
+    const idx=P.indexOf(p);
+    const hasPh=p.photos&&p.photos.length>0;
+    const tags=(p.types||[p.type||'ot']).map(t=>'<span class="tag '+(TBC[t]||'tot')+'">'+(TL2[t]||t)+'</span>').join(' ');
+    const de=isDE(p);
+    return '<tr onclick="focP('+idx+')">'
+      +'<td style="color:var(--ink-3);font-weight:600">'+(idx+1)+'</td>'
+      +'<td style="font-weight:500">'+p.name+(p.fname?' ('+p.fname+')':'')+'</td>'
+      +'<td>'+p.muni+'</td>'
+      +'<td style="color:var(--ink-3);font-size:11px">'+p.addr+'</td>'
+      +'<td><span class="tag '+(de?'tde':'tpa')+'">'+(de?'DE':'PA')+'</span></td>'
+      +'<td>'+p.year+'</td>'
+      +'<td><div class="tc">'+tags+'</div></td>'
+      +'<td style="text-align:right">'+fmt(p.cost)+'</td>'
+      +'<td style="text-align:right;color:var(--forest-mid)">'+fmt(p.rebate)+'</td>'
+      +'<td style="text-align:right;color:var(--amber)">'+fmt(p.grant)+'</td>'
+      +'<td style="text-align:right;color:var(--ink-3)">'+fmt(p.landowner)+'</td>'
+      +'<td style="text-align:center">'+(hasPh?'<span style="color:var(--sky)">&#128247; '+p.photos.length+'</span>':'—')+'</td>'
+      +'</tr>';
+  }).join('');
+}
 
 </script>
 </body>
