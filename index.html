@@ -700,12 +700,12 @@ tr:hover td{background:var(--stone);cursor:pointer}
       <div class="card card-pad">
         <div class="sec-lbl">Practices installed</div>
         <div class="prac-grid">
-          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-cl)"></span><span class="prac-lbl">Cons. Landscaping</span><span class="prac-cnt">49</span></div>
-          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-tp)"></span><span class="prac-lbl">Tree / Buffer</span><span class="prac-cnt">42</span></div>
-          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-rb)"></span><span class="prac-lbl">Rain Barrel</span><span class="prac-cnt">49</span></div>
-          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-rg)"></span><span class="prac-lbl">Rain Garden</span><span class="prac-cnt">16</span></div>
-          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-dp)"></span><span class="prac-lbl">Depaving</span><span class="prac-cnt">5</span></div>
-          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-pp)"></span><span class="prac-lbl">Perm. Pavers</span><span class="prac-cnt">2</span></div>
+          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-cl)"></span><span class="prac-lbl">Cons. Landscaping</span><span class="prac-cnt" id="pc-cl">49</span></div>
+          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-tp)"></span><span class="prac-lbl">Tree / Buffer</span><span class="prac-cnt" id="pc-tp">42</span></div>
+          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-rb)"></span><span class="prac-lbl">Rain Barrel</span><span class="prac-cnt" id="pc-rb">49</span></div>
+          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-rg)"></span><span class="prac-lbl">Rain Garden</span><span class="prac-cnt" id="pc-rg">16</span></div>
+          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-dp)"></span><span class="prac-lbl">Depaving</span><span class="prac-cnt" id="pc-dp">5</span></div>
+          <div class="prac-pill"><span class="prac-dot" style="background:var(--col-pp)"></span><span class="prac-lbl">Perm. Pavers</span><span class="prac-cnt" id="pc-pp">2</span></div>
         </div>
         <div style="font-size:10px;color:var(--ink-3);margin-top:6px;font-style:italic">Unit counts — each practice installation is counted individually (e.g., a property with 3 rain gardens = 3 units)</div>
       </div>      <div class="card card-pad">
@@ -1445,6 +1445,14 @@ function renderData(){
   _upd('sv-lev-ratio', _fmt$(_lev.toFixed(2)));
   _upd('sv-lev-fed',   _fmt$(_totWS));
   _upd('sv-lev-total', _fmt$(_totCost));
+  // Practice sidebar counts
+  const _upd2=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  _upd2('pc-cl', P.reduce((s,p)=>s+(p.cl||0),0));
+  _upd2('pc-tp', P.reduce((s,p)=>s+(p.tp||0)+(p.bf||0),0));
+  _upd2('pc-rb', P.reduce((s,p)=>s+(p.rb||0),0));
+  _upd2('pc-rg', P.reduce((s,p)=>s+(p.rg||0),0));
+  _upd2('pc-dp', P.reduce((s,p)=>s+(p.dp||0),0));
+  _upd2('pc-pp', P.reduce((s,p)=>s+(p.pp||0),0));
 }
 
 const PROJECT_PHOTOS={"39.7609,-75.7193":["4.43A"],"39.8078,-75.8220":["54.24A","54.78A","Vennard trees.jpg"],"39.7795,-75.7903":["23.3A"],"39.7698,-75.7444":["28.55A"],"39.7680,-75.8455":["44.2A"],"39.8175,-75.7837":["21.26A"],"39.7980,-75.7952":["29.27A"],"39.8112,-75.8655":["31.71A"],"39.6731,-75.7500":["39.60A","39.60B","39.60C","39.60D"],"39.7536,-75.8157":["15.5A","15.6A"],"39.7556,-75.8227":["30.7A","30.7B","30.7C","30.7D"],"39.7363,-75.7245":["34.52A","34.52B"],"39.7874,-75.8100":["38.8A"],"39.7035,-75.7084":["49.49A"],"39.8224,-75.8256":["57.72A","57.72B","57.72C"],"39.8145,-75.8244":["5.31A"],"39.7805,-75.8132":["8.10A","8.10B","8.11A","8.11B"],"39.6998,-75.7514":["43.51A"],"39.8241,-75.8341":["58.76A","58.76B"],"39.7142,-75.7002":["1.58A"],"39.6904,-75.7307":["17.66A","17.69A","17.37A","17.42A"],"39.6977,-75.7153":["24.68A","24.68B"],"39.6978,-75.7324":["33.65A","33.65B"],"39.7830,-75.7557":["6.61A"],"39.8415,-75.8741":["11.70A","11.70B"],"39.7337,-75.7830":["13.18A"],"39.7645,-75.7939":["14.17A","14.25A"],"39.8026,-75.7943":["19.29A"],"39.7631,-75.7954":["25.19A","25.22A"],"39.7668,-75.7598":["27.20A"],"39.7883,-75.7120":["40.54A"],"39.8227,-75.8233":["48.74A","48.75A"],"39.7684,-75.7832":["56.14A","56.14B"],"39.7528,-75.6871":["7.40A"],"39.7355,-75.7812":["9.21A"],"39.8040,-75.7929":["16.35A"],"39.7898,-75.7992":["18.12A","18.12B","18.12C"],"39.8065,-75.7928":["35.36A","Newton CL.jpg"],"39.7698,-75.6877":["36.41B","36.41A"],"39.7279,-75.6907":["55.38A"],"39.8243,-75.8333":["58.76C","58.77A","58.77B"],"39.7825,-75.7373":["Barker CL.jpg"],"39.8001,-75.8184":["Boddorff 1 Before.jpg","Boddorff 2 new trees and shrubs.jpg","Boddorff 3 After Planting.jpg"],"39.8052,-75.7869":["69.84A","Boor buffer.jpg"],"39.7355,-75.7127":["68.83A","68.83B","68.83C","Buttner CL.jpg","Buttner rain garden.jpg","Buttner swales.jpg"],"39.7354,-75.7771":["Dougherty CL.jpg"],"39.7433,-75.7735":["67.82A","67.82B","French CL.jpg","French tree.jpg"],"39.8131,-75.8321":["66.81A","Newton CL.jpg"],"39.8254,-75.7832":["Proto Garage 1.jpeg","Proto Garage 2.jpeg","Proto Garage 3.jpeg","Proto Garage 4.jpeg","Proto Garage 5.jpeg","Proto Garage 6.jpeg"],"39.7567,-75.6929":["65.80A","65.80B","Rogers CL 1.jpg","Rogers CL 2.jpg"],"39.7696,-75.7439":["64.79A","64.79B","64.79C","64.79D","64.79E","Trull RG during.jpg","Trull RG.jpg","Trull Swales.jpg","Trull piping.jpg","Trull swales during.jpg"],"39.7256,-75.6811":["Wiley CL 1.jpg"],"39.7244,-75.7602":["Woolfolk 1.jpg","Woolfolk 2.jpg"]};
@@ -1609,8 +1617,12 @@ function focP(i){
   },400);
 }
 function focPByLatLng(lat,lng){
-  const i=P.findIndex(p=>Math.abs(p.lat-lat)<0.001&&Math.abs(p.lng-lng)<0.001);
-  if(i>=0)focP(i);
+  // Try progressively wider tolerances to handle minor coord discrepancies in sheet
+  for(const tol of [0.0005,0.001,0.0015,0.002]){
+    const i=P.findIndex(p=>Math.abs(p.lat-lat)<tol&&Math.abs(p.lng-lng)<tol);
+    if(i>=0){focP(i);return;}
+  }
+  console.warn('CTR: no project found near',lat,lng,'— P has',P.length,'entries');
 }
 
 // Reset municipality filter when user navigates back to this page
