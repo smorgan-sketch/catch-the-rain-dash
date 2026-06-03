@@ -620,17 +620,17 @@ tr:hover td{background:var(--stone);cursor:pointer}
 
 <!-- ═══ HERO STATS ═══════════════════════════════════════════ -->
 <div class="hero">
-  <div class="stat"><div class="stat-val">79</div><div class="stat-lbl">Adopters</div><div class="stat-note">unique properties, 2017–2026</div></div>
-  <div class="stat"><div class="stat-val">211</div><div class="stat-lbl">Site Visits</div><div class="stat-note">across 12 municipalities</div></div>
-  <div class="stat"><div class="stat-val">163</div><div class="stat-lbl">Practices Installed</div><div class="stat-note">unit count, 6 practice types</div></div>
-  <div class="stat accent"><div class="stat-val">653%</div><div class="stat-lbl">Return on Investment</div><div class="stat-note">federal dollars</div></div>
-  <div class="stat accent"><div class="stat-val">5.5&times;</div><div class="stat-lbl">Leverage</div><div class="stat-note">every $1 federal invested</div></div>
+  <div class="stat"><div class="stat-val" id="sv-adopters">79</div><div class="stat-lbl">Adopters</div><div class="stat-note">unique properties, 2017–2026</div></div>
+  <div class="stat"><div class="stat-val" id="sv-visits">211</div><div class="stat-lbl">Site Visits</div><div class="stat-note">across 12 municipalities</div></div>
+  <div class="stat"><div class="stat-val" id="sv-practices">163</div><div class="stat-lbl">Practices Installed</div><div class="stat-note">unit count, 6 practice types</div></div>
+  <div class="stat accent"><div class="stat-val" id="sv-roi">653%</div><div class="stat-lbl">Return on Investment</div><div class="stat-note">federal dollars</div></div>
+  <div class="stat accent"><div class="stat-val" id="sv-leverage">5.5&times;</div><div class="stat-lbl">Leverage</div><div class="stat-note">every $1 federal invested</div></div>
 </div>
 
 <!-- ═══ LEVERAGE STRIP ═══════════════════════════════════════ -->
 <div class="lev-strip">
-  <div class="lev-badge">$69K &rarr; $451K</div>
-  <div class="lev-text">Every <strong>$1</strong> of federal Wild &amp; Scenic funding invested in the White Clay Creek watershed was matched with <strong>$5.53</strong> in outside funding from landowners, grants, and in-kind contributions &mdash; turning $69,013 in federal investment into $450,501 in total on-the-ground watershed improvements.</div>
+  <div class="lev-badge" id="sv-lev-badge">$69K &rarr; $451K</div>
+  <div class="lev-text">Every <strong>$1</strong> of federal Wild &amp; Scenic funding invested in the White Clay Creek watershed was matched with <strong id="sv-lev-ratio">$5.53</strong> in outside funding from landowners, grants, and in-kind contributions &mdash; turning <span id="sv-lev-fed">$69,013</span> in federal investment into <span id="sv-lev-total">$450,501</span> in total on-the-ground watershed improvements.</div>
 </div>
 
 <!-- ═══ PAGE ═════════════════════════════════════════════════ -->
@@ -756,10 +756,10 @@ tr:hover td{background:var(--stone);cursor:pointer}
 
   <!-- Funding row -->
   <div class="g4 gap">
-    <div class="cost-btn"><div class="cv">$450,501</div><div class="cl">Total Project Costs</div><div class="cs">All eligible expenses combined</div></div>
-    <div class="cost-btn g"><div class="cv">$143,248</div><div class="cl">Total Rebate Awarded</div><div class="cs">Wild &amp; Scenic + Grant &amp; In-Kind</div></div>
-    <div class="cost-btn a"><div class="cv">$69,013</div><div class="cl">W&amp;S Federal Funding</div><div class="cs">Within total rebate awarded</div></div>
-    <div class="cost-btn p"><div class="cv">$307,253</div><div class="cl">Landowner Contributions</div><div class="cs">Invested after all program funding</div></div>
+    <div class="cost-btn"><div class="cv" id="sv-cost">$450,501</div><div class="cl">Total Project Costs</div><div class="cs">All eligible expenses combined</div></div>
+    <div class="cost-btn g"><div class="cv" id="sv-rebate">$143,248</div><div class="cl">Total Rebate Awarded</div><div class="cs">Wild &amp; Scenic + Grant &amp; In-Kind</div></div>
+    <div class="cost-btn a"><div class="cv" id="sv-ws">$69,013</div><div class="cl">W&amp;S Federal Funding</div><div class="cs">Within total rebate awarded</div></div>
+    <div class="cost-btn p"><div class="cv" id="sv-landowner">$307,253</div><div class="cl">Landowner Contributions</div><div class="cs">Invested after all program funding</div></div>
   </div>
 
   <!-- Featured Projects -->
@@ -1420,6 +1420,31 @@ function renderData(){
         });
         ctx.restore();
       }}}});
+
+  // ── Update live stats ──────────────────────────────────────
+  const _totPrac = P.reduce((s,p)=>s+p.rb+p.rg+(p.tp||0)+(p.bf||0)+p.cl+p.dp+p.pp, 0);
+  const _totCost = P.reduce((s,p)=>s+p.cost, 0);
+  const _totReb  = P.reduce((s,p)=>s+p.rebate, 0);
+  const _totWS   = P.reduce((s,p)=>s+(p.rebate-p.grant), 0);
+  const _totLand = P.reduce((s,p)=>s+p.landowner, 0);
+  const _roi     = _totWS>0 ? Math.round(_totCost/_totWS*100) : 0;
+  const _lev     = _totWS>0 ? (_totCost/_totWS - 1) : 0;
+  const _fmt$    = n=>'$'+Math.round(n).toLocaleString();
+  const _fmtK    = n=>'$'+Math.round(n/1000)+'K';
+  const _upd     = (id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  _upd('sv-adopters',  P.length);
+  _upd('sv-visits',    appData[2]);
+  _upd('sv-practices', _totPrac);
+  _upd('sv-roi',       _roi+'%');
+  _upd('sv-leverage',  _lev.toFixed(1)+'\u00d7');
+  _upd('sv-cost',      _fmt$(_totCost));
+  _upd('sv-rebate',    _fmt$(_totReb));
+  _upd('sv-ws',        _fmt$(_totWS));
+  _upd('sv-landowner', _fmt$(_totLand));
+  _upd('sv-lev-badge', _fmtK(_totWS)+' \u2192 '+_fmtK(_totCost));
+  _upd('sv-lev-ratio', _fmt$(_lev.toFixed(2)));
+  _upd('sv-lev-fed',   _fmt$(_totWS));
+  _upd('sv-lev-total', _fmt$(_totCost));
 }
 
 // ── GOOGLE SHEETS LIVE FETCH ─────────────────────────────────────────────
