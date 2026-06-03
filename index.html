@@ -793,7 +793,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(71)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.82541,-75.78325)">&#128205; See on map</button>
         </div>
       </div>
       <!-- Chapman -->
@@ -811,7 +811,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(54)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.752787,-75.68708)">&#128205; See on map</button>
         </div>
       </div>
       <!-- Harmony Park RG2 -->
@@ -833,7 +833,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(62)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.824324,-75.83331)">&#128205; See on map</button>
         </div>
       </div>
 
@@ -855,7 +855,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(52)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.822721,-75.823253)">&#128205; See on map</button>
         </div>
       </div>
       <!-- Luke -->
@@ -880,7 +880,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(41)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.697666,-75.715304)">&#128205; See on map</button>
         </div>
       </div>
 
@@ -905,7 +905,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(39)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.714193,-75.700201)">&#128205; See on map</button>
         </div>
       </div>
       <!-- Post -->
@@ -927,7 +927,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(15)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.673087,-75.750041)">&#128205; See on map</button>
         </div>
       </div>
       <!-- Avongrove Library -->
@@ -950,7 +950,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(28)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.822406,-75.82563)">&#128205; See on map</button>
         </div>
       </div>
 
@@ -973,7 +973,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
             Read project story
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <button class="feat-map-btn" onclick="focP(23)">&#128205; See on map</button>
+          <button class="feat-map-btn" onclick="focPByLatLng(39.736305,-75.724459)">&#128205; See on map</button>
         </div>
       </div>
 </div><!-- /featured-grid -->
@@ -1062,16 +1062,22 @@ const FEAT_NAMES = {
 };
 
 const FEATURED_URLS={
-  23: 'https://www.whiteclay.org/pmpncc-ctr-highlights',
-  28: 'https://www.whiteclay.org/aglwgb-ctr-highlights',
-  39: 'https://www.whiteclay.org/rancc-ctr-highlights',
-  41: 'https://www.whiteclay.org/ldncc-ctr-highlights',
-  52: 'https://www.whiteclay.org/tnwgb-ctr-highlights',
-  62: 'https://www.whiteclay.org/hrg2wgb-ctr-highlights',
-  71: 'https://www.whiteclay.org/tgavb-ctr-highlights',
-  15: 'https://www.whiteclay.org/cpnwk-ctr-highlights',
-  54: 'https://www.whiteclay.org/gcncc-ctr-highlights'
+  '39.736305,-75.724459': 'https://www.whiteclay.org/pmpncc-ctr-highlights',
+  '39.822406,-75.82563':  'https://www.whiteclay.org/aglwgb-ctr-highlights',
+  '39.714193,-75.700201': 'https://www.whiteclay.org/rancc-ctr-highlights',
+  '39.697666,-75.715304': 'https://www.whiteclay.org/ldncc-ctr-highlights',
+  '39.822721,-75.823253': 'https://www.whiteclay.org/tnwgb-ctr-highlights',
+  '39.824324,-75.83331':  'https://www.whiteclay.org/hrg2wgb-ctr-highlights',
+  '39.82541,-75.78325':   'https://www.whiteclay.org/tgavb-ctr-highlights',
+  '39.673087,-75.750041': 'https://www.whiteclay.org/cpnwk-ctr-highlights',
+  '39.752787,-75.68708':  'https://www.whiteclay.org/gcncc-ctr-highlights'
 };
+function getFeaturedUrl(p){
+  return Object.entries(FEATURED_URLS).find(([k])=>{
+    const [klat,klng]=k.split(',').map(Number);
+    return Math.abs(p.lat-klat)<0.001&&Math.abs(p.lng-klng)<0.001;
+  })?.[1]||null;
+}
 
 const TC={cl:'#1a6b4a',tp:'#b84c00',rg:'#1a5fa0',rb:'#c47a00',dp:'#6b21a8',pp:'#991b1b',ot:'#7a9184'};
 const TBC={cl:'tcl',tp:'ttp',rg:'trg',rb:'trb',dp:'tdp',pp:'tpp',ot:'tot'};
@@ -1209,8 +1215,8 @@ function mkPopup(p,idx){
   const photoHtml=ph
     ?'<div class="pu-ph">'+p.photos.slice(0,4).map((c,i)=>'<img class="pu-th" src="'+getTH(c)+'" onclick="openLb('+JSON.stringify(p.photos)+','+i+')" title="Expand">').join('')+'</div>'
     :'<div class="pu-noph">No photos on file</div>';
-  const learnMore=FEATURED_URLS[idx]
-    ?'<a href="'+FEATURED_URLS[idx]+'" class="pu-learn-more">&#128279; Learn more about this project</a>'
+  const learnMore=getFeaturedUrl(p)
+    ?'<a href="'+getFeaturedUrl(p)+'" class="pu-learn-more">&#128279; Learn more about this project</a>'
     :'';
   return '<div class="pu-hd">'+p.year+' &mdash; '+p.muni+'</div>'
     +'<div class="pu-tags">'+tags+'</div>'
@@ -1300,9 +1306,9 @@ function buildPopup(p,i){
           JSON.stringify(p.photos)+','+j+')" title="Click to expand">':'';
       }).join('')+'</div>'
     :'<div class="pu-noph">No photos on file</div>';
-  const learnMore=FEATURED_URLS[i]
-    ?'<a href="'+FEATURED_URLS[i]+'" class="pu-learn-more">&#128279; Learn more</a>'
-    :'';
+  const _fu=getFeaturedUrl(p);
+  const learnMore=_fu?'<a href="'+_fu+'" class="pu-learn-more">&#128279; Learn more</a>':'';
+  
   return '<div class="pu-inner pu-drag-hint">'
     +'<div class="pu-hd">'+(p.years_list&&p.years_list.length>1?p.years_list.join(', '):p.year)+' &mdash; '+p.muni+'</div>'
     +'<div class="pu-num">Project #'+(i+1)+'</div>'
@@ -1450,12 +1456,21 @@ async function loadSheetData(){
   const base=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/`;
   const qs=`?key=${API_KEY}`;
   try{
-    const [iRes,aRes]=await Promise.all([
-      fetch(base+"'Implementation%20Statistics'!A2:U2000"+qs),
-      fetch(base+"'Applicants'!A2:AD2000"+qs)
+    const [iRes,aRes,aHdrRes]=await Promise.all([
+      fetch(base+"'Implementation%20Statistics'!A2:AC2000"+qs),
+      fetch(base+"'Applicants'!A2:AH2000"+qs),
+      fetch(base+"'Applicants'!A1:AH1"+qs)
     ]);
     const iJson=await iRes.json();
     const aJson=await aRes.json();
+    // Detect column positions from header row
+    const aHdr=(aHdrRes.ok?(await aHdrRes.json()).values||[[]]:[[']])[0];
+    const COL_LAT=aHdr.findIndex(h=>/^latitude$/i.test(h.trim()));
+    const COL_LNG=aHdr.findIndex(h=>/^longitude$/i.test(h.trim()));
+    const COL_MUNI=aHdr.findIndex(h=>/municipality/i.test(h.trim()));
+    const COL_VS=aHdr.findIndex(h=>/visit.?sort/i.test(h.trim()));
+    const COL_TS=aHdr.findIndex(h=>/timestamp/i.test(h.trim()));
+    console.log('Applicant col indices — lat:'+COL_LAT+' lng:'+COL_LNG+' muni:'+COL_MUNI+' vs:'+COL_VS+' ts:'+COL_TS);
 
     // ── implemented statistics ─────────────────────────────────────────
     // Cols (0-indexed): A=LastName B=FirstName C=Address D=Lat E=Lng F=Date G=Muni
@@ -1469,12 +1484,13 @@ async function loadSheetData(){
       const key=lat.toFixed(4)+','+lng.toFixed(4);
       const year=parseYearLive(r[5]);
       const muni=normMuniLive(r[6]);
-      const rb=+r[7]||0, rg=+r[8]||0, tp=+r[9]||0, bf=+r[10]||0;
-      const cl=+r[11]||0, dp=+r[12]||0, pp=+r[13]||0;
-      const cost=parseFloat(r[14])||0;
-      const wsReb=parseFloat(r[15])||0;
-      const landowner=parseFloat(r[16])||0;
-      const grant=parseFloat(r[17])||0;
+      const pn=s=>parseFloat((s||'').toString().replace(/[$,\s]/g,''))||0;
+      const rb=pn(r[7]), rg=pn(r[8]), tp=pn(r[9]), bf=pn(r[10]);
+      const cl=pn(r[11]), dp=pn(r[12]), pp=pn(r[13]);
+      const cost=pn(r[14]);
+      const wsReb=pn(r[15]);
+      const landowner=pn(r[16]);
+      const grant=pn(r[17]);
       const rebate=wsReb+grant;
       if(projMap[key]){
         const p=projMap[key];
@@ -1512,10 +1528,10 @@ async function loadSheetData(){
       if(!yr)return;
       if(!YR[yr])YR[yr]={c:0,cost:0,reb:0,grant:0,landowner:0};
       YR[yr].c++;
-      YR[yr].cost+=parseFloat(r[14])||0;
-      YR[yr].reb+=(parseFloat(r[15])||0)+(parseFloat(r[17])||0);
-      YR[yr].grant+=parseFloat(r[17])||0;
-      YR[yr].landowner+=parseFloat(r[16])||0;
+      YR[yr].cost+=pn(r[14]);
+      YR[yr].reb+=pn(r[15])+pn(r[17]);
+      YR[yr].grant+=pn(r[17]);
+      YR[yr].landowner+=pn(r[16]);
     });
 
     // ── applicants tab ────────────────────────────────────────────────
@@ -1523,17 +1539,18 @@ async function loadSheetData(){
     const applRows=(aJson.values||[]);
     const seen=new Set();
     const deduped=applRows.filter(r=>{const k=r.join('|');if(seen.has(k))return false;seen.add(k);return true;});
+    const vsIdx=COL_VS>=0?COL_VS:1;
     const totalApplicants=deduped.length;
-    const inWCC=deduped.filter(r=>r[1]==='1'||r[1]==='2').length;
-    const siteVisits=deduped.filter(r=>r[1]==='1').length;
+    const inWCC=deduped.filter(r=>String(r[vsIdx])==='1'||String(r[vsIdx])==='2').length;
+    const siteVisits=deduped.filter(r=>String(r[vsIdx])==='1').length;
     const adopters=P.length;
 
-    V=deduped.filter(r=>r[28]&&r[29]&&!isNaN(parseFloat(r[28]))&&!isNaN(parseFloat(r[29])))
-      .map(r=>({lat:parseFloat(r[28]),lng:parseFloat(r[29]),
-        muni:normMuniLive(r[10]),year:parseYearLive(r[2]),vs:r[1]}));
+    V=deduped.filter(r=>COL_LAT>=0&&COL_LNG>=0&&r[COL_LAT]&&r[COL_LNG]&&!isNaN(parseFloat(r[COL_LAT]))&&!isNaN(parseFloat(r[COL_LNG])))
+      .map(r=>({lat:parseFloat(r[COL_LAT]),lng:parseFloat(r[COL_LNG]),
+        muni:normMuniLive(COL_MUNI>=0?r[COL_MUNI]:''),year:parseYearLive(COL_TS>=0?r[COL_TS]:''),vs:String(r[COL_VS>=0?COL_VS:1])}));
 
     VY={};
-    deduped.filter(r=>r[1]==='1').forEach(r=>{
+    deduped.filter(r=>String(r[1])==='1').forEach(r=>{
       const y=parseYearLive(r[2]);if(!y)return;
       const yr=String(y);VY[yr]=(VY[yr]||0)+1;
     });
@@ -1563,6 +1580,10 @@ function focP(i){
     map.setView([p.lat,p.lng],Math.max(map.getZoom(),14),{animate:true});
     setTimeout(()=>{if(pMkr[i])pMkr[i].openPopup()},500);
   },400);
+}
+function focPByLatLng(lat,lng){
+  const i=P.findIndex(p=>Math.abs(p.lat-lat)<0.001&&Math.abs(p.lng-lng)<0.001);
+  if(i>=0)focP(i);
 }
 
 // Reset municipality filter when user navigates back to this page
