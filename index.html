@@ -1451,8 +1451,8 @@ async function loadSheetData(){
   const qs=`?key=${API_KEY}`;
   try{
     const [iRes,aRes]=await Promise.all([
-      fetch(base+'implemented%20statistics!A2:U2000'+qs),
-      fetch(base+'applicants!A2:AD2000'+qs)
+      fetch(base+"'implemented%20statistics'!A2:U2000"+qs),
+      fetch(base+"'applicants'!A2:AD2000"+qs)
     ]);
     const iJson=await iRes.json();
     const aJson=await aRes.json();
