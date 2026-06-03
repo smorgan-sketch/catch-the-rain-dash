@@ -1155,7 +1155,7 @@ document.addEventListener('keydown',e=>{if(!lbOpen)return;if(e.key==='ArrowLeft'
 const CTR=[39.762,-75.793],Z=11;
 const streetTile=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19});
 const satTile=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri World Imagery',maxZoom:19});
-const map=L.map('map',{zoomControl:false,tap:true,scrollWheelZoom:false,touchZoom:false,doubleClickZoom:false,layers:[streetTile]}).setView(CTR,Z);
+const map=L.map('map',{zoomControl:false,tap:true,scrollWheelZoom:false,touchZoom:false,doubleClickZoom:true,layers:[streetTile]}).setView(CTR,Z);
 L.control.zoom({position:'topright'}).addTo(map);
 const HomeCtl=L.Control.extend({options:{position:'topright'},onAdd(){
   const d=L.DomUtil.create('div','leaflet-bar leaflet-control');
