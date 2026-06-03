@@ -1455,6 +1455,8 @@ async function loadSheetData(){
   if(overlay)overlay.style.display='flex';
   const base=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/`;
   const qs=`?key=${API_KEY}`;
+  // Strip currency formatting and parse as float
+  const pn=s=>parseFloat((s||'').toString().replace(/[$,\s]/g,''))||0;
   try{
     const [iRes,aRes,aHdrRes]=await Promise.all([
       fetch(base+"'Implementation%20Statistics'!A2:AC2000"+qs),
@@ -1463,19 +1465,16 @@ async function loadSheetData(){
     ]);
     const iJson=await iRes.json();
     const aJson=await aRes.json();
-    // Detect column positions from header row
-    const aHdr=(aHdrRes.ok?(await aHdrRes.json()).values||[[]]:[[']])[0];
-    const COL_LAT=aHdr.findIndex(h=>/^latitude$/i.test(h.trim()));
-    const COL_LNG=aHdr.findIndex(h=>/^longitude$/i.test(h.trim()));
+    const _aHdrJson=await aHdrRes.json();
+    const aHdr=(_aHdrJson.values&&_aHdrJson.values[0])||[];
+    const COL_LAT =aHdr.findIndex(h=>/^latitude$/i.test(h.trim()));
+    const COL_LNG =aHdr.findIndex(h=>/^longitude$/i.test(h.trim()));
     const COL_MUNI=aHdr.findIndex(h=>/municipality/i.test(h.trim()));
-    const COL_VS=aHdr.findIndex(h=>/visit.?sort/i.test(h.trim()));
-    const COL_TS=aHdr.findIndex(h=>/timestamp/i.test(h.trim()));
-    console.log('Applicant col indices — lat:'+COL_LAT+' lng:'+COL_LNG+' muni:'+COL_MUNI+' vs:'+COL_VS+' ts:'+COL_TS);
+    const COL_VS  =aHdr.findIndex(h=>/visit.?sort/i.test(h.trim()));
+    const COL_TS  =aHdr.findIndex(h=>/timestamp/i.test(h.trim()));
+    console.log('CTR col indices — lat:'+COL_LAT+' lng:'+COL_LNG+' muni:'+COL_MUNI+' vs:'+COL_VS+' ts:'+COL_TS);
 
-    // ── implemented statistics ─────────────────────────────────────────
-    // Cols (0-indexed): A=LastName B=FirstName C=Address D=Lat E=Lng F=Date G=Muni
-    // H=RainBarrel I=RainGarden J=TreePlanting K=Buffers L=ConsvLandscaping M=Depaving N=PermPavers
-    // O=TotalCost P=W&SRebate Q=LandownerCost R=Grant S=RemainingRebate T=Notes
+    // ── Build P from Implementation Statistics ──────────────────────
     const implRows=(iJson.values||[]).filter(r=>r.length>4);
     const projMap={};
     implRows.forEach(r=>{
@@ -1484,13 +1483,9 @@ async function loadSheetData(){
       const key=lat.toFixed(4)+','+lng.toFixed(4);
       const year=parseYearLive(r[5]);
       const muni=normMuniLive(r[6]);
-      const pn=s=>parseFloat((s||'').toString().replace(/[$,\s]/g,''))||0;
-      const rb=pn(r[7]), rg=pn(r[8]), tp=pn(r[9]), bf=pn(r[10]);
-      const cl=pn(r[11]), dp=pn(r[12]), pp=pn(r[13]);
-      const cost=pn(r[14]);
-      const wsReb=pn(r[15]);
-      const landowner=pn(r[16]);
-      const grant=pn(r[17]);
+      const rb=pn(r[7]),rg=pn(r[8]),tp=pn(r[9]),bf=pn(r[10]);
+      const cl=pn(r[11]),dp=pn(r[12]),pp=pn(r[13]);
+      const cost=pn(r[14]),wsReb=pn(r[15]),landowner=pn(r[16]),grant=pn(r[17]);
       const rebate=wsReb+grant;
       if(projMap[key]){
         const p=projMap[key];
@@ -1504,7 +1499,6 @@ async function loadSheetData(){
           rb,rg,tp,bf,cl,dp,pp,cost,rebate,grant,landowner,photos:[]};
       }
     });
-
     P=Object.values(projMap).map(p=>{
       const types=[];
       if(p.rb>0)types.push('rb');
@@ -1522,10 +1516,11 @@ async function loadSheetData(){
         grant:p.grant,landowner:p.landowner,photos:p.photos};
     }).sort((a,b)=>a.year-b.year);
 
+    // ── Build YR (year-by-year project stats) ──────────────────────
     YR={};
     implRows.forEach(r=>{
       const yr=String(parseYearLive(r[5])||'');
-      if(!yr)return;
+      if(!yr||yr==='null')return;
       if(!YR[yr])YR[yr]={c:0,cost:0,reb:0,grant:0,landowner:0};
       YR[yr].c++;
       YR[yr].cost+=pn(r[14]);
@@ -1534,43 +1529,46 @@ async function loadSheetData(){
       YR[yr].landowner+=pn(r[16]);
     });
 
-    // ── applicants tab ────────────────────────────────────────────────
-    // Cols: A=order B=visitSort C=Timestamp ... K=Municipality ... AC(28)=Lat AD(29)=Lng
+    // ── Build V and stats from Applicants tab ───────────────────────
+    const vsIdx =COL_VS >=0?COL_VS :1;
+    const tsIdx =COL_TS >=0?COL_TS :2;
+    const muniIdx=COL_MUNI>=0?COL_MUNI:10;
+    const latIdx =COL_LAT>=0?COL_LAT:28;
+    const lngIdx =COL_LNG>=0?COL_LNG:29;
     const applRows=(aJson.values||[]);
     const seen=new Set();
     const deduped=applRows.filter(r=>{const k=r.join('|');if(seen.has(k))return false;seen.add(k);return true;});
-    const vsIdx=COL_VS>=0?COL_VS:1;
     const totalApplicants=deduped.length;
     const inWCC=deduped.filter(r=>String(r[vsIdx])==='1'||String(r[vsIdx])==='2').length;
     const siteVisits=deduped.filter(r=>String(r[vsIdx])==='1').length;
     const adopters=P.length;
-
-    V=deduped.filter(r=>COL_LAT>=0&&COL_LNG>=0&&r[COL_LAT]&&r[COL_LNG]&&!isNaN(parseFloat(r[COL_LAT]))&&!isNaN(parseFloat(r[COL_LNG])))
-      .map(r=>({lat:parseFloat(r[COL_LAT]),lng:parseFloat(r[COL_LNG]),
-        muni:normMuniLive(COL_MUNI>=0?r[COL_MUNI]:''),year:parseYearLive(COL_TS>=0?r[COL_TS]:''),vs:String(r[COL_VS>=0?COL_VS:1])}));
-
+    V=deduped
+      .filter(r=>r[latIdx]&&r[lngIdx]&&!isNaN(parseFloat(r[latIdx]))&&!isNaN(parseFloat(r[lngIdx])))
+      .map(r=>({
+        lat:parseFloat(r[latIdx]),lng:parseFloat(r[lngIdx]),
+        muni:normMuniLive(r[muniIdx]||''),
+        year:parseYearLive(r[tsIdx]||''),
+        vs:String(r[vsIdx])
+      }));
     VY={};
-    deduped.filter(r=>String(r[1])==='1').forEach(r=>{
-      const y=parseYearLive(r[2]);if(!y)return;
-      const yr=String(y);VY[yr]=(VY[yr]||0)+1;
+    deduped.filter(r=>String(r[vsIdx])==='1').forEach(r=>{
+      const y=parseYearLive(r[tsIdx]||'');
+      if(!y)return;
+      VY[String(y)]=(VY[String(y)]||0)+1;
     });
-
     appData=[totalApplicants,inWCC,siteVisits,adopters];
-
-    // Update HTML subtitle with live count
+    // Update subtitle
     document.querySelectorAll('.stat-subtitle').forEach(el=>{
       if(el.textContent.includes('program applicants'))
         el.textContent='Total program applicants since 2016 — '+totalApplicants+' registrations received (deduped)';
     });
-
+    console.log('CTR data loaded — P:'+P.length+' V:'+V.length+' applicants:'+totalApplicants+' visits:'+siteVisits);
   }catch(err){
-    console.error('CTR Dashboard: sheet fetch failed.',err);
-    // Dashboard renders with empty data rather than crashing
+    console.error('CTR Dashboard: data load failed.',err);
   }
   if(overlay)overlay.style.display='none';
   renderData();
 }
-
 loadSheetData();
 
 function focP(i){
