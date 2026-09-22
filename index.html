@@ -607,7 +607,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.36 &mdash; September 2026</div>
+  <div class="hdr-ver">v5.37 &mdash; September 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -650,27 +650,27 @@ tr:hover td{background:var(--stone);cursor:pointer}
         <select class="map-sel" id="sel-prac" onchange="setPracSel(this.value)">
           <option value="all">All practices</option>
           <option value="cl">Conservation Landscaping</option>
-          <option value="tp">Tree Planting / Buffer</option>
-          <option value="rb">Rain Barrel</option>
-          <option value="rg">Rain Garden</option>
           <option value="dp">Depaving</option>
           <option value="pp">Permeable Pavers</option>
+          <option value="rb">Rain Barrel</option>
+          <option value="rg">Rain Garden</option>
+          <option value="tp">Tree Planting / Buffer</option>
         </select>
         <span class="map-sel-lbl">Municipality</span>
         <select class="map-sel" id="sel-muni" onchange="setMuniSel(this.value)">
           <option value="all">All municipalities</option>
           <option value="Avondale">Avondale</option>
-          <option value="West Grove">West Grove</option>
-          <option value="London Grove">London Grove</option>
-          <option value="London Britain">London Britain</option>
           <option value="Franklin">Franklin</option>
-          <option value="New Garden">New Garden</option>
+          <option value="London Britain">London Britain</option>
+          <option value="London Grove">London Grove</option>
           <option value="New Castle">New Castle Co.</option>
-          <option value="Newark">Newark</option>
-          <option value="Penn">Penn</option>
+          <option value="New Garden">New Garden</option>
           <option value="New London">New London</option>
-          <option value="West Marlborough">West Marlborough</option>
+          <option value="Newark">Newark</option>
           <option value="Other">Other</option>
+          <option value="Penn">Penn</option>
+          <option value="West Grove">West Grove</option>
+          <option value="West Marlborough">West Marlborough</option>
         </select>
         <span class="map-sel-lbl">Year</span>
         <select class="map-sel" id="sel-year" onchange="setYearSel(this.value)">
