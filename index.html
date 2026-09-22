@@ -607,7 +607,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.33 &mdash; June 2026</div>
+  <div class="hdr-ver">v5.34 &mdash; September 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -1176,7 +1176,7 @@ document.addEventListener('keydown',e=>{if(!lbOpen)return;if(e.key==='ArrowLeft'
 
 // MAP
 const CTR=[39.762,-75.793],Z=11;
-const streetTile=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19});
+const streetTile=L.layerGroup([L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri, HERE, Garmin, FAO, NOAA, USGS',maxZoom:19,maxNativeZoom:16}),L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{attribution:'',maxZoom:19,maxNativeZoom:16})]);
 const satTile=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri World Imagery',maxZoom:19});
 const map=L.map('map',{zoomControl:false,tap:true,scrollWheelZoom:false,touchZoom:false,doubleClickZoom:true,layers:[streetTile]}).setView(CTR,Z);
 L.control.zoom({position:'topright'}).addTo(map);
