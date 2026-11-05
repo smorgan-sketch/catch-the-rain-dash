@@ -612,7 +612,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.39 &mdash; November 2026</div>
+  <div class="hdr-ver">v5.40 &mdash; November 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -717,11 +717,14 @@ tr:hover td{background:var(--stone);cursor:pointer}
         <div style="font-size:10px;color:var(--ink-3);margin-top:6px;font-style:italic">Unit counts — each practice installation is counted individually (e.g., a property with 3 rain gardens = 3 units)</div>
       </div>      <div class="card card-pad">
         <div class="sec-lbl">Adopters per State</div>
+        <div id="state-bars">
         <div class="bar-row"><span class="bar-lbl">Pennsylvania</span><div class="bar-track"><div class="bar-fill" style="width:65.0%;background:var(--forest-mid)"></div></div><span class="bar-val">52</span></div>
         <div class="bar-row"><span class="bar-lbl">Delaware</span><div class="bar-track"><div class="bar-fill" style="width:35.0%;background:var(--sky)"></div></div><span class="bar-val">28</span></div>
+        </div>
       </div>
       <div class="card card-pad">
         <div class="sec-lbl">Adopters per Municipality</div>
+        <div id="muni-bars">
         <div class="bar-row"><span class="bar-lbl">New Castle Co.</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--forest-mid)"></div></div><span class="bar-val">23</span></div>
         <div class="bar-row"><span class="bar-lbl">London Grove</span><div class="bar-track"><div class="bar-fill" style="width:65.2%;background:var(--forest-mid)"></div></div><span class="bar-val">15</span></div>
         <div class="bar-row"><span class="bar-lbl">London Britain</span><div class="bar-track"><div class="bar-fill" style="width:52.2%;background:var(--forest-mid)"></div></div><span class="bar-val">12</span></div>
@@ -733,6 +736,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
         <div class="bar-row"><span class="bar-lbl">Penn</span><div class="bar-track"><div class="bar-fill" style="width:8.7%;background:var(--forest-mid)"></div></div><span class="bar-val">2</span></div>
         <div class="bar-row"><span class="bar-lbl">Avondale Boro.</span><div class="bar-track"><div class="bar-fill" style="width:4.3%;background:var(--forest-mid)"></div></div><span class="bar-val">1</span></div>
         <div class="bar-row"><span class="bar-lbl">Other</span><div class="bar-track"><div class="bar-fill" style="width:4.3%;background:var(--forest-mid)"></div></div><span class="bar-val">1</span></div>
+        </div>
 
     </div>
     </div></div>
@@ -1421,6 +1425,8 @@ function renderData(){
   fitWatershed();
   applyF();
 
+  renderAdopterBars();
+
   // CHARTS
   const allY=[...new Set([...Object.keys(VY).map(Number),...Object.keys(YR).map(Number)])].sort();
   // Destroy existing charts if they exist (avoid canvas re-use error on refresh)
@@ -1497,6 +1503,32 @@ const PROJECT_PHOTOS={"39.7609,-75.7193":["4.43A"],"39.8078,-75.8220":["54.24A",
 const SHEET_ID='18fxqvMjkGtc0Tvb1nYrWcJ3soVvwKrcvVVqjNAc7nDo';
 const API_KEY='AIzaSyBbA1tAC10vvJJEiyOzU1t0qOo2oMIiwwM';
 let appData=[0,0,0,0];
+
+// v5.40: Adopters per State / per Municipality are built from the live project list (P)
+// (were hard-coded HTML and never updated). Counting follows §10c/§10d: every adopter
+// counts, classified by normalized municipality; non-canonical munis go to "Other".
+const MUNI_CANON=['New Castle Co.','Newark','London Grove','London Britain','Franklin','New Garden',
+  'West Grove Borough','Penn','New London','Avondale Borough','East Marlborough'];
+const MUNI_SHORT={'West Grove Borough':'West Grove Boro.','Avondale Borough':'Avondale Boro.'};
+function barRow(lbl,val,pct,color){
+  return '<div class="bar-row"><span class="bar-lbl">'+lbl+'</span><div class="bar-track"><div class="bar-fill" style="width:'
+    +pct.toFixed(1)+'%;background:'+color+'"></div></div><span class="bar-val">'+val+'</span></div>';
+}
+function renderAdopterBars(){
+  if(!P.length)return; // keep the fallback HTML if live data didn't load
+  const sb=document.getElementById('state-bars'), mb=document.getElementById('muni-bars');
+  if(sb){
+    const de=P.filter(isDE).length, pa=P.length-de, tot=P.length;
+    sb.innerHTML=barRow('Pennsylvania',pa,pa/tot*100,'var(--forest-mid)')+barRow('Delaware',de,de/tot*100,'var(--sky)');
+  }
+  if(mb){
+    const c={};
+    P.forEach(p=>{const m=MUNI_CANON.includes(p.muni)?p.muni:'Other';c[m]=(c[m]||0)+1;});
+    const rows=Object.entries(c).sort((a,b)=>(a[0]==='Other')-(b[0]==='Other')||b[1]-a[1]||a[0].localeCompare(b[0]));
+    const max=Math.max(...rows.map(r=>r[1]));
+    mb.innerHTML=rows.map(([m,n])=>barRow(MUNI_SHORT[m]||m,n,n/max*100,'var(--forest-mid)')).join('');
+  }
+}
 
 function normMuniLive(raw){
   if(!raw)return'Other';
