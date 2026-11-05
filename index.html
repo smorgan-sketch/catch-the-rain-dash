@@ -612,7 +612,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.38 &mdash; November 2026</div>
+  <div class="hdr-ver">v5.39 &mdash; November 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -755,8 +755,8 @@ tr:hover td{background:var(--stone);cursor:pointer}
     <div class="card card-pad">
       <div class="sec-lbl">Applicant overview</div>
       <div style="position:relative;height:210px"><canvas id="appChart"></canvas></div>
-      <div style="font-size:11px;color:var(--ink-3);margin-top:8px">
-        Total program applicants since 2016 &mdash; 272 registrations received (deduped)
+      <div id="app-caption" style="font-size:11px;color:var(--ink-3);margin-top:8px">
+        Applications received since 2016. Returning applicants who applied for a new project are counted each time.
       </div>
     </div>
 
@@ -1441,7 +1441,7 @@ function renderData(){
   const appColors = ['rgba(30,100,200,.62)','rgba(30,100,200,.62)','rgba(30,100,200,.62)','rgba(30,100,200,.62)'];
   new Chart(document.getElementById('appChart'),{type:'bar',
     data:{labels:appLabels,datasets:[{data:appData,backgroundColor:appColors,borderRadius:4,borderSkipped:false,barPercentage:.55}]},
-    options:{responsive:true,maintainAspectRatio:false,
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.parsed.y.toLocaleString()+' '+appLabels[ctx.dataIndex].replace('\n',' ')}}},
       scales:{
         x:{grid:{display:false},ticks:{font:{size:10},color:'#3a4e45',maxRotation:0,
@@ -1632,10 +1632,9 @@ async function loadSheetData(){
     });
     appData=[totalApplicants,inWCC,siteVisits,adopters];
     // Update subtitle
-    document.querySelectorAll('.stat-subtitle').forEach(el=>{
-      if(el.textContent.includes('program applicants'))
-        el.textContent='Total program applicants since 2016 — '+totalApplicants+' registrations received (deduped)';
-    });
+    // v5.39: caption is driven by the live count (was hard-coded "272" and never updated)
+    const capEl=document.getElementById('app-caption');
+    if(capEl) capEl.textContent=totalApplicants.toLocaleString()+' applications received since 2016. Returning applicants who applied for a new project are counted each time.';
     console.log('CTR data loaded — P:'+P.length+' V:'+V.length+' applicants:'+totalApplicants+' visits:'+siteVisits);
   }catch(err){
     console.error('CTR Dashboard: data load failed.',err);
