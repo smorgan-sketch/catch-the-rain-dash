@@ -316,7 +316,12 @@ body{font-family:"Nunito",sans-serif;background:var(--ctr-cream);color:var(--ink
 
 
 /* The map+sidebar grid becomes map+panel+sidebar on large screens */
-.map-wrap{position:relative}
+.map-wrap{position:relative;isolation:isolate} /* v5.38: keeps Leaflet controls (z-index 1000) below the sticky header */
+/* v5.38: on desktop the map panel (toolbar + map + zoom/home) is pinned in view while the sidebar scrolls */
+@media(min-width:901px){
+  .map-wrap{position:sticky;top:calc(var(--hdr-h,70px) + 12px);align-self:start;
+    height:calc(100vh - var(--hdr-h,70px) - 24px);min-height:480px}
+}
 
 
 
@@ -607,7 +612,7 @@ tr:hover td{background:var(--stone);cursor:pointer}
     <a href="#featured">Featured Projects</a>
     <button class="nav-priv" onclick="showLock()">&#128274;&nbsp; Private View</button>
   </nav>
-  <div class="hdr-ver">v5.37 &mdash; September 2026</div>
+  <div class="hdr-ver">v5.38 &mdash; November 2026</div>
   <button id="hdr-tog" onclick="document.getElementById('hdrMob').classList.toggle('open')">&#9776;</button>
   <div id="hdrMob" class="hdr-mob">
     <a href="https://www.whiteclay.org/" target="_blank">WCWA Home</a>
@@ -1218,6 +1223,12 @@ function fitWatershed(){
   if(mw && 'ResizeObserver' in window){
     new ResizeObserver(refit).observe(mw);
   }
+  // v5.38: track the sticky header height so the pinned map panel sits just below it
+  const hdr=document.querySelector('.hdr');
+  function setHdrH(){ if(hdr) document.documentElement.style.setProperty('--hdr-h', hdr.offsetHeight+'px'); }
+  setHdrH();
+  window.addEventListener('resize', setHdrH, {passive:true});
+  if(hdr && 'ResizeObserver' in window){ new ResizeObserver(setHdrH).observe(hdr); }
   // Initial settle after first paint
   setTimeout(refit, 50);
 })();
